@@ -11,6 +11,7 @@ class BexposeUserController {
         redirect(action: "list", params: params)
     }
 
+    //@Secured(['ROLE_ADMIN'])
     def list() {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         [bexposeUserInstanceList: BexposeUser.list(params), bexposeUserInstanceTotal: BexposeUser.count()]
@@ -41,8 +42,8 @@ class BexposeUserController {
             redirect(action: "list")
             return
         }
-
-        [bexposeUserInstance: bexposeUserInstance]
+        def membershipInstance = Membership.findByLeader(bexposeUserInstance)
+        [bexposeUserInstance: bexposeUserInstance, membershipInstance:membershipInstance]
     }
 
     @Secured(['ROLE_ADMIN'])
@@ -105,5 +106,20 @@ class BexposeUserController {
 			flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'bexposeUser.label', default: 'BexposeUser'), params.id])
             redirect(action: "show", id: params.id)
         }
+    }
+
+    def addMember() {
+        def bexposeUserInstance = new BexposeUser(params)
+        def introducingUser = BexposeUser.get(params.id)
+        if(bexposeUserInstance.save(flush: true)) {
+            if(introducingUser) {
+                def membershipInstance = Membership.findByLeader(introducingUser)
+                if(!membershipInstance) membershipInstance = new Membership(leader:introducingUser).save(flush:true)
+                membershipInstance.addToBexposeUsers(bexposeUserInstance)
+                membershipInstance.save(failOnError:true)
+            }
+        }
+        
+        redirect(action: "show", id: introducingUser.id)
     }
 }

@@ -57,6 +57,13 @@
 	</label>
 	<g:textField name="name" value="${bexposeUserInstance?.name}"/>
 </div>
+<div class="fieldcontain ${hasErrors(bean: bexposeUserInstance, field: 'email', 'error')} ">
+	<label for="email">
+		<g:message code="bexposeUser.email.label" default="Email" />
+		
+	</label>
+	<g:textField name="email" value="${bexposeUserInstance?.email}"/>
+</div>
 
 <div class="fieldcontain ${hasErrors(bean: bexposeUserInstance, field: 'passwordExpired', 'error')} ">
 	<label for="passwordExpired">
