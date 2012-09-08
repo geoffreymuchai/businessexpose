@@ -34,7 +34,7 @@ class BootStrap {
     	println "###Initializing BexposeUsers###"
         def johnDoe = new BexposeUser(name:"John Doe", email:"test@email.com", username:"johndoe", password:"pass").save(flush:true, failOnError:true)
         def membership = new Membership(leader:johnDoe).save(flush:true, failOnError:true)
-        15.times { membership.addToBexposeUsers(new BexposeUser(name:"user $it", email:"user$it@email.com", username:"user$it", password:"pass$it")) }
+        10.times { membership.addToBexposeUsers(new BexposeUser(name:"user $it", email:"user$it@email.com", username:"user$it", password:"pass$it")) }
     	membership.save(flush:true, failOnError:true)
         println "membership users::${membership.bexposeUsers}"
 
