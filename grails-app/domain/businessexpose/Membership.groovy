@@ -15,15 +15,12 @@ class Membership {
 
     def getMembers() {
         def users = bexposeUsers - leader
-        println "users:: $users"
         users
     }
 
     def getLevel() {
         def size = bexposeUsers.size()
-        println "size is $size"
         if(size < 10) {
-            println "size is $size"
             LEVEL.ONE
         } else if(size >= 10 && size < 20) {
             LEVEL.TWO
@@ -34,5 +31,16 @@ class Membership {
         } else if(size >= 40 && size <= 50) {
             LEVEL.FIVE
         }
+    }
+
+    def getMembersByLevel() {
+        def membershipInstanceUserList = [:]
+        List members = this.getMembers().toList()
+        def memberInstanceList = members.collate( 10, true )
+        def levels =  LEVEL.values()*.toString()*.toLowerCase()
+        memberInstanceList.size().times{
+            membershipInstanceUserList."${levels[it]}" = memberInstanceList[it]
+        }
+        membershipInstanceUserList
     }
 }

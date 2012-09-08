@@ -1,4 +1,3 @@
-
 <%@ page import="businessexpose.BexposeUser" %>
 <!doctype html>
 <html>
@@ -14,15 +13,19 @@
 					<table id="membership-tree" class="table table-bordered ">
 						<thead>
 							<tr>
-								<td class="bold" colspan='4'>${membershipInstance.leader.name}</td>
+								<td class="bold" colspan='10'>${membershipInstance.leader.name}</td>
 							</tr>
 						</thead>	
 						<tbody>
-							<tr>
-								<g:each in="${membershipInstance?.members}" status="i" var="memberInstance">
-									<td>${memberInstance.name}</td>
-								</g:each>
-							</tr>
+							<g:each in="${businessexpose.Membership.LEVEL.values()*.toString()*.toLowerCase()}" status="j" var="level">
+								<g:if test="${membershipInstanceLevelList[level]}">
+									<tr class="${level}">
+										<g:each in="${membershipInstanceLevelList[level]}" status="i" var="memberInstance">
+											<td>${memberInstance.name}</td>
+										</g:each>
+									</tr>
+								</g:if>
+							</g:each>
 						</tbody>
 					</table>
 				</div>

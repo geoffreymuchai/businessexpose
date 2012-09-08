@@ -44,7 +44,19 @@ class BexposeUserSpec extends grails.plugin.spock.IntegrationSpec {
         then:
             membership.bexposeUsers.size() == 10
             johnDoe.level == Membership.LEVEL.TWO
-            
+    }
+
+    def "can return a map of users for each level"() {
+        when:
+            def johnDoe = new BexposeUser(name:"John Doe", email:"test@email.com", username:"johndoe", password:"pass").save(flush:true, failOnError:true)
+            def membership = new Membership(leader:johnDoe)
+            15.times { membership.addToBexposeUsers(new BexposeUser(name:"user $it", email:"user$it@email.com", username:"user$it", password:"pass$it")) }
+            membership.save()
+            List memberInstanceList = johnDoe.members.toList().collate(10, true )
+        then:
+            johnDoe.level == Membership.LEVEL.TWO
+            johnDoe.membersByLevel.one == memberInstanceList[0]
+            johnDoe.membersByLevel.two == memberInstanceList[1]
     }
 
 }

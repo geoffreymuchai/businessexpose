@@ -24,16 +24,17 @@ class BexposeUser extends User {
 
     def getMembers() {
         if(hasMembers()) {
-            Membership.findByLeader(this).bexposeUsers
+            Membership.findByLeader(this).members
         }
     }
 
     def getLevel() {
         if(hasMembers()) return membership.level
-        else {
-            println "called"
-            Membership.LEVEL.ONE
-        }
+        else { Membership.LEVEL.ONE }
+    }
+
+    def getMembersByLevel() {
+       if(hasMembers()) return membership.membersByLevel 
     }
 
 }

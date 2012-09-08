@@ -43,8 +43,9 @@ class BexposeUserController {
             return
         }
         def membershipInstance = Membership.findByLeader(bexposeUserInstance)
+        def membershipInstanceLevelList = membershipInstance.membersByLevel
         if(!bexposeUserInstance.hasMembers()) redirect action: "profile", id:params.id
-        [bexposeUserInstance: bexposeUserInstance, membershipInstance:membershipInstance]
+        [bexposeUserInstance: bexposeUserInstance, membershipInstance:membershipInstance, membershipInstanceLevelList:membershipInstanceLevelList]
     }
 
     @Secured(['ROLE_ADMIN'])
