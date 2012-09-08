@@ -43,7 +43,19 @@ class BexposeUserController {
             return
         }
         def membershipInstance = Membership.findByLeader(bexposeUserInstance)
+        if(!bexposeUserInstance.hasMembers()) redirect action: "profile", id:params.id
         [bexposeUserInstance: bexposeUserInstance, membershipInstance:membershipInstance]
+    }
+
+    @Secured(['ROLE_ADMIN'])
+    def profile() {
+        def bexposeUserInstance = BexposeUser.get(params.id)
+        if (!bexposeUserInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'bexposeUser.label', default: 'BexposeUser'), params.id])
+            redirect(action: "list")
+            return
+        }
+        [bexposeUserInstance: bexposeUserInstance]
     }
 
     @Secured(['ROLE_ADMIN'])

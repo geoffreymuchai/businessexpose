@@ -32,18 +32,9 @@ class BexposeUserSpec extends grails.plugin.spock.IntegrationSpec {
             membership.count == 1
             user.hasMembers()
             user.members.size() == 1
+            user.level == Membership.LEVEL.ONE
     }
 
-    def "membership leader cannot be part of the membership list"() {
-        when:
-            def user = new BexposeUser(name:"John Doe", email:"test@email.com", username:"johndoe", password:"pass").save(flush:true)
-            def membership = new Membership(leader:user)
-            membership.addToBexposeUsers(user)
-        then:
-            !membership.validate()
-    }
-
-    @IgnoreRest
     def "can get count of users added by a BexposeUser"() {
         when:
             def johnDoe = new BexposeUser(name:"John Doe", email:"test@email.com", username:"johndoe", password:"pass").save(flush:true, failOnError:true)
@@ -51,7 +42,9 @@ class BexposeUserSpec extends grails.plugin.spock.IntegrationSpec {
             10.times { membership.addToBexposeUsers(new BexposeUser(name:"user $it", email:"user$it@email.com", username:"user$it", password:"pass$it")) }
             membership.save()
         then:
-            membership.count == 10
+            membership.bexposeUsers.size() == 10
+            johnDoe.level == Membership.LEVEL.TWO
+            
     }
 
 }

@@ -1,6 +1,6 @@
 package businessexpose
 
-class BexposeUser extends User{
+class BexposeUser extends User {
 
 	String name
 	String email
@@ -8,6 +8,8 @@ class BexposeUser extends User{
     String password
 
 	boolean activated
+
+    static transients  = ['level']
 
 	static belongsTo = [membership:Membership]
 
@@ -25,4 +27,13 @@ class BexposeUser extends User{
             Membership.findByLeader(this).bexposeUsers
         }
     }
+
+    def getLevel() {
+        if(hasMembers()) return membership.level
+        else {
+            println "called"
+            Membership.LEVEL.ONE
+        }
+    }
+
 }

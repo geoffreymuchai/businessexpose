@@ -14,6 +14,7 @@
         <link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon">
         
 		<r:require modules="bootstrap"/>
+        <r:require modules="common"/>
         <g:layoutHead/>
         <r:layoutResources />
     </head>

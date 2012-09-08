@@ -3,7 +3,7 @@ package businessexpose
 import org.apache.commons.lang.builder.HashCodeBuilder
 
 class Membership {
-	enum LEVEL {ONE, TWO, THREE, FOUR}
+	enum LEVEL {ONE, TWO, THREE, FOUR, FIVE}
 	BexposeUser leader
 
 	static hasMany = [bexposeUsers:BexposeUser]
@@ -17,5 +17,22 @@ class Membership {
         def users = bexposeUsers - leader
         println "users:: $users"
         users
+    }
+
+    def getLevel() {
+        def size = bexposeUsers.size()
+        println "size is $size"
+        if(size < 10) {
+            println "size is $size"
+            LEVEL.ONE
+        } else if(size >= 10 && size < 20) {
+            LEVEL.TWO
+        } else if(size >= 20 && size < 30) {
+            LEVEL.THREE
+        } else if(size >= 30 && size < 40) {
+            LEVEL.FOUR
+        } else if(size >= 40 && size <= 50) {
+            LEVEL.FIVE
+        }
     }
 }

@@ -1,7 +1,7 @@
 modules = {
 	common {
-		dependsOn "jquery, application, bootstrap"
-		resource url:'css/layout.css'
+		dependsOn "jquery, jquery-ui, application, bootstrap"
+        resource url:'css/layout.css'
 	}
 
     application {
@@ -9,5 +9,11 @@ modules = {
         resource url:'js/plugins.js'
         resource url:'js/script.js'
         resource url:'js/libs/modernizr-2.5.3.min.js'
+    }
+
+    overrides {
+	'jquery-theme' {
+		resource id: 'theme', url:[dir:'jquery-ui', file:"themes/medium/jquery-ui-1.8.11.custom.css"]
+	}
     }
 }
