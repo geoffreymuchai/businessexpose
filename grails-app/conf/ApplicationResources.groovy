@@ -1,6 +1,6 @@
 modules = {
 	common {
-		dependsOn "jquery, jquery-ui, application, bootstrap"
+		dependsOn "jquery, jquery-ui, application, bootstrap-responsive-css"
         resource url:'css/layout.css'
 	}
 

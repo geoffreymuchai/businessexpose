@@ -15,20 +15,12 @@
 						</g:eachError>
 					</ul>
 					</g:hasErrors>
-					<g:if test="${bexposeUserInstance?.id}">
-						<g:form action="addMember" id="bexposeUserInstance?.id">
-							<fieldset class="form">
-								<g:render template="form"/>
-							</fieldset>
-						</g:form>
-					</g:if>
-					<g:else>
-						<g:form action="save" >
-							<fieldset class="form">
-								<g:render template="form"/>
-							</fieldset>
-						</g:form>
-					</g:else>
+					<g:form action="addMember">
+						<g:hiddenField name="currentUser" value="${currentBexposeUser?.id}" />
+						<fieldset class="form">
+							<g:render template="form"/>
+						</fieldset>
+					</g:form>
 				</div>
 			</div>
 		</div>

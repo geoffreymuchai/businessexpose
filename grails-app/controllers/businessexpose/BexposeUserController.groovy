@@ -19,19 +19,8 @@ class BexposeUserController {
 
     @Secured(['ROLE_ADMIN'])
     def create() {
-        [bexposeUserInstance: new BexposeUser(params)]
-    }
-
-    @Secured(['ROLE_ADMIN'])
-    def save() {
-        def bexposeUserInstance = new BexposeUser(params)
-        if (!bexposeUserInstance.save(flush: true)) {
-            render(view: "create", model: [bexposeUserInstance: bexposeUserInstance])
-            return
-        }
-
-		flash.message = message(code: 'default.created.message', args: [message(code: 'bexposeUser.label', default: 'BexposeUser'), bexposeUserInstance.id])
-        redirect(action: "show", id: bexposeUserInstance.id)
+        def currentBexposeUser = BexposeUser.get(params.id)
+        [bexposeUserInstance: new BexposeUser(params), currentBexposeUser: currentBexposeUser]
     }
 
     @Secured(['ROLE_ADMIN'])
@@ -43,7 +32,7 @@ class BexposeUserController {
             return
         }
         def membershipInstance = Membership.findByLeader(bexposeUserInstance)
-        def membershipInstanceLevelList = membershipInstance.membersByLevel
+        def membershipInstanceLevelList = membershipInstance?.membersByLevel
         if(!bexposeUserInstance.hasMembers()) redirect action: "profile", id:params.id
         [bexposeUserInstance: bexposeUserInstance, membershipInstance:membershipInstance, membershipInstanceLevelList:membershipInstanceLevelList]
     }
@@ -121,18 +110,21 @@ class BexposeUserController {
         }
     }
 
+    @Secured(['ROLE_ADMIN'])
     def addMember() {
         def bexposeUserInstance = new BexposeUser(params)
-        def introducingUser = BexposeUser.get(params.id)
+        def introducingUser
+        if(params.currentUser) introducingUser = BexposeUser.get(params.currentUser)
         if(bexposeUserInstance.save(flush: true)) {
             if(introducingUser) {
                 def membershipInstance = Membership.findByLeader(introducingUser)
                 if(!membershipInstance) membershipInstance = new Membership(leader:introducingUser).save(flush:true)
                 membershipInstance.addToBexposeUsers(bexposeUserInstance)
                 membershipInstance.save(failOnError:true)
+                println "### Saving membershipInstance ###"
+                println "${membershipInstance.members*.name}"
             }
         }
-        
-        redirect(action: "show", id: introducingUser.id)
+        redirect(action: "show", id: introducingUser?.id ?: bexposeUserInstance?.id)
     }
 }
