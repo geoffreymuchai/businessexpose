@@ -10,7 +10,12 @@
 				"children":[
                     	<g:if test="${membershipInstance.members}">
 							<g:each in="${membershipInstance?.members}" status="i" var="memberInstance">
-								{"name":"${memberInstance.name}"},
+								<g:if test="${i != membershipInstance?.members.size()-1}">
+									{"name":"${memberInstance.name}"},
+								</g:if>
+								<g:else>
+									{"name":"${memberInstance.name}"}
+								</g:else>
 							</g:each>
 						</g:if>
 				]
@@ -36,7 +41,8 @@
 			var node = treeSVG.selectAll("g.node")
 				.data(nodes)
 				.enter().append("svg:g")
-				.attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
+				.attr("class","node")
+				.attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
 			node.append("svg:circle")
 				.attr("r", function(d) { return d.name.length * 4; })
 				.style("fill","grey");
@@ -45,11 +51,6 @@
 				.attr("dy", ".3em")
 				.style("color","white")
 				.text(function(d) { return d.name; });
-
-			function click(d) {
-				alert("clicked");
-				update();
-			}
 		</r:script>
 	</head>
 	<body>
