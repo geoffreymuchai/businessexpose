@@ -11,7 +11,7 @@ class BexposeUserController {
         redirect(action: "list", params: params)
     }
 
-    //@Secured(['ROLE_ADMIN'])
+    @Secured(['ROLE_ADMIN'])
     def list() {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         [bexposeUserInstanceList: BexposeUser.list(params), bexposeUserInstanceTotal: BexposeUser.count()]

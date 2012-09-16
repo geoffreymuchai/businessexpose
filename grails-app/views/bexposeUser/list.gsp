@@ -3,7 +3,7 @@
 <!doctype html>
 <html>
 	<head>
-		<meta name="layout" content="main">
+		<meta name="layout" content="bootstrap">
 		<g:set var="entityName" value="${message(code: 'bexposeUser.label', default: 'BexposeUser')}" />
 		<title><g:message code="default.list.label" args="[entityName]" /></title>
 	</head>
@@ -35,8 +35,6 @@
 									<g:sortableColumn property="accountLocked" title="${message(code: 'bexposeUser.accountLocked.label', default: 'Account Locked')}" />
 								
 									<g:sortableColumn property="activated" title="${message(code: 'bexposeUser.activated.label', default: 'Activated')}" />
-								
-									<g:sortableColumn property="enabled" title="${message(code: 'bexposeUser.enabled.label', default: 'Enabled')}" />
 								
 								</tr>
 							</thead>

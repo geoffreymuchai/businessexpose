@@ -7,7 +7,7 @@ class UrlMappings {
 			}
 		}
 
-		"/"(controller:"bexposeUser", action:"list")
+		"/"(view:"/index")
 		"500"(view:'/error')
 	}
 }

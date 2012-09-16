@@ -12,6 +12,7 @@ class BexposeUser extends User {
     static transients  = ['level']
 
 	static belongsTo = [membership:Membership]
+    //static hasOne = [account:Account]
 
     static constraints = {
     	email email:true
